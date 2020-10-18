@@ -1,95 +1,124 @@
 import React, { Component } from 'react';
-import Header from "../../common/header/Header";
-import './Profile.css'
-import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
+import { GridList, GridListTile, Box, Modal, Backdrop, Fade } from '@material-ui/core';
+import PostHeader from '../../common/post/PostHeader';
+import PostMedia from '../../common/post/PostMedia';
+import PostCaption from '../../common/post/PostCaption';
+import PostLikes from '../../common/post/PostLikes';
+import PostComments from '../../common/post/PostComments';
+import PageWithHeader from '../../common/header/PageWithHeader';
+import ProfileDetail from '../../common/profile/ProfileDetails';
+import ProfileIcon from '../../common/profile/ProfileIcon';
+import { postsDetails } from '../../common/Test';
+import Config from '../../common/config';
+import './Profile.css';
 
 
-const styles = theme => ({
-  avatar: {
-    margin: 10,
-    width: 50,
-    height: 50,
-    marginLeft: 200,
-  },
-
-})
-
-class Profile extends Component {
-
-  constructor() {
-    super();
-    this.state = {
-      dataAPIEndPt1:[],
-      profilePic: [],
-      loggedIn: sessionStorage.getItem("access_token") == null ? false : true,
-      profilePic: [],
-      username:"",
-      followedBy: 0,
-      follows: 0,
-      posts: 0,
-      fullName: "",
-      userImages: [],
-    }
-  }
-
-
-  UNSAFE_componentWillMount() {
-
-     //call to API Endpoint 1 to get profile-picture
-            
-     let xhrEndPt1 = new XMLHttpRequest();
-     let that = this;
-     xhrEndPt1.addEventListener("readystatechange", function(){
-         if (this.readyState === 4){
-             console.log(JSON.parse(this.responseText));
-             that.setState({dataAPIEndPt1: JSON.parse(this.responseText).data});
-             that.setState({profilePic: JSON.parse(this.responseText).data.profile_picture});
-             that.setState({username:JSON.parse(this.responseText).data.username});
-             that.setState({followedBy: JSON.parse(this.responseText).data.counts.followed_by});
-             that.setState({follows:JSON.parse(this.responseText).data.counts.follows});
-             that.setState({posts:JSON.parse(this.responseText).data.counts.media});
-             that.setState({fullName: JSON.parse(this.responseText).data.full_name});
+export default class Profile extends Component {
+    constructor() {
+        super();
+        this.state = {
+            userPosts: [],
+            open: false,
+            userPost: {}
         }
-     });
-     xhrEndPt1.open("GET", this.props.baseUrl+"?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
-     xhrEndPt1.send(null);
+        this.logoutUser = this.logoutUser.bind(this);
+        this.redirectUserToHomePage = this.redirectUserToHomePage.bind(this);
+    }
+    logoutUser = () => {
+        sessionStorage.clear();
+        this.props.history.replace('/');
+    }
 
-     //call to API End point2
+    // Redirect user to home page when he clicks on the Logo text
+    redirectUserToHomePage = () => this.props.history.push('/home');
 
-     let xhrEndPt2 = new XMLHttpRequest();
-     let that1 = this;
-     xhrEndPt2.addEventListener("readystatechange", function(){
-         if (this.readyState === 4) {
-          console.log(JSON.parse(this.responseText).data);
-          that1.setState({userImages: JSON.parse(this.responseText).data});
-          console.log(JSON.parse(this.responseText));
-          }                
-     });
-     xhrEndPt2.open("GET",this.props.baseUrl+"media/recent?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
-     xhrEndPt2.send(null);
- 
-  }
+    // Get component profile avatar with Menu Options and associated Handlers
+    getProfileAvatar = () => {
+        return (
+            <Box ml="auto" display="flex" flexDirection="row" alignItems="center">
+                <ProfileIcon type="avatarWithMenu" menuOptions={['Logout']} handlers={[this.logoutUser]} />
+            </Box>);
+    };
 
-  
-  render() {
-    const { classes } = this.props;
-    return(
-        <div>
-         <Header 
-         baseUrl={this.props.baseUrl}
-         showSearchBox="false" 
-         showAccount="false"
-         profilePic={this.state.profilePic} 
-         loggedIn={this.state.loggedIn} /> 
+    // Fetch user's posts by making a API call
+    async componentDidMount() {
+        if (!Config.api.mock) {
+            let accessToken = window.sessionStorage.getItem("access-token");
+            let getPostsURI = Config.api.endpoints.find((endpoint) => endpoint.name === "Get Posts").uri.replace('$accessToken', accessToken);
+            let getPostDetailsURI = Config.api.endpoints.find((endpoint) => endpoint.name === "Get Post Details").uri.replace('$accessToken', accessToken);
 
-          <div className="profilePage">
-            <div className="profileInfoSection">
-                 <Avatar alt="Profile_pic" src={this.state.profilePic} className={classes.avatar}/>
-            </div>
-          </div>
-      </div>
-    )
-  }}
+            let response = await fetch(getPostsURI);
+            let posts = await response.json();
+            posts = posts.data;
 
-  export default withStyles(styles) (Profile);
+            for (let i = 0; i < posts.length; i++) {
+                response = await fetch(getPostDetailsURI.replace('$postId', posts[i].id));
+                let details = await response.json();
+                posts[i].media_type = details.media_type;
+                posts[i].media_url = details.media_url;
+                posts[i].username = details.username;
+                posts[i].timestamp = details.timestamp;
+                posts[i].comments = [];
+                posts[i].isLiked = false;
+                posts[i].numLikes = Math.round(100 + Math.random() * 100);
+            }
+            this.setState({ userPosts: posts });
+        }
+        else {
+            this.setState({ userPosts: postsDetails });
+        }
+
+    }
+
+    // Handler to open post modal
+    openPostDetails = (e) => {
+        this.setState({ open: true, userPost: this.state.userPosts.find((post) => post.id === e.target.id) });
+    }
+
+    // Handler to close post modal
+    closePostDetails = (e) => {
+        this.setState({ open: false, userPost: {} });
+    }
+
+    render() {
+        return (
+            <PageWithHeader title="Image Viewer" positionLeft={this.getProfileAvatar}>
+                {
+                    (this.state.userPosts.length > 0) ?
+                        (<Box><ProfileDetail className="profile-detail" userName={this.state.userPosts[0].username} numPosts={this.state.userPosts.length}
+                            fullName="Tayyab Khan" follows={Math.round(100 + Math.random() * 11)}
+                            followers={Math.round(13270 + Math.random() * 11)} />
+                            < Box className="image-grid">
+                                <GridList cellHeight={300} cols={3}>
+                                    {this.state.userPosts.map((userPost) => (
+                                        <GridListTile key={userPost.id} >
+                                            <img id={userPost.id} src={userPost.media_url} alt={userPost.id} onClick={this.openPostDetails} />
+                                        </GridListTile>
+                                    ))}
+                                </GridList>
+                            </Box>
+
+                            <Modal className="modal" open={this.state.open}
+                                onClose={this.closePostDetails} closeAfterTransition BackdropComponent={Backdrop}>
+                                <Fade in={this.state.open}>
+                                    <Box width="60%" display="flex" flexDirection="row" justifyContent="space-evenly" className="modal-content">
+                                        <Box m="1%" width="50%" className="image-container" >
+                                            {(this.state.userPost.media_url) ? <PostMedia media={this.state.userPost.media_url} mediaId={this.state.userPost.id} minWidth="350px" minHeight="350px" /> : ""}
+                                        </Box>
+                                        <Box m="2%" width="50%" display="flex" flexDirection="column" justifyContent="left" alignItems="center">
+                                            <PostHeader postUser={this.state.userPost.username} postedTime={this.state.userPost.timestamp} />
+                                            <PostCaption mb="auto" text={this.state.userPost.caption} />
+                                            <Box mt="auto" width="100%">
+                                                <PostComments postUser={this.state.userPost.username} >
+                                                    <PostLikes likes={this.state.userPost.numLikes} />
+                                                </PostComments>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Fade>
+                            </Modal>
+                        </Box>) : ""}
+            </PageWithHeader>
+        );
+    }
+}

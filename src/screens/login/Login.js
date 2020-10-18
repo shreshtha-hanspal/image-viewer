@@ -1,90 +1,71 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
+import { Card, CardActions, CardContent, Typography, Button, FormControl, FormHelperText, Input, InputLabel } from '@material-ui/core';
+import PageWithHeader from '../../common/header/PageWithHeader';
+import Config from '../../common/config';
 import './Login.css';
-import Header from '../../common/header/Header';
-import Home from '../../screens/home/Home';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import Button from '@material-ui/core/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
-class Login extends Component {
-
+export default class Login extends Component {
     constructor() {
         super();
         this.state = {
-            username: "",
-            password: "",
-            reqUsername: "dispNone",
-            reqPassword: "dispNone",
-            error: "dispNone",
-            loginSucess: false,
-            loggedIn: sessionStorage.getItem("access_token") == null ? false : true,
+            usernameVal: "",
+            passwordVal: "",
+            usernameRequiredText: "hide",
+            passwordRequiredText: "hide",
+            incorrectLoginInfoText: "hide"
         }
+
+        /*****************************************************************************
+         * Username, Password, Access Token & Mocking can be setup or enabled in
+         *  ../../common/Config.js
+         *****************************************************************************/
     }
 
-    inputUsernameChangeHandler = (e) => {
-        this.setState({username: e.target.value});
+    getUsernameOnChange = (e) => this.setState({ usernameVal: e.target.value, usernameRequiredText: "hide" });
+    getPasswordOnChange = (e) => this.setState({ passwordVal: e.target.value, passwordRequiredText: "hide" });
+
+    //Verify Input Credentials & log the user in if the supplied credentials are OK
+    loginUserOnBtnClick = (e) => {
+        (!this.state.usernameVal) ? this.setState({ usernameRequiredText: "show" }) : this.setState({ usernameRequiredText: "hide" });
+        (!this.state.passwordVal) ? this.setState({ passwordRequiredText: "show" }) : this.setState({ passwordRequiredText: "hide" });
+        // (this.state.usernameVal !== "" && this.state.passwordVal !== "" && (this.state.usernameVal !== Config.login.username || this.state.passwordVal !== Config.login.password)) ? this.setState({ incorrectLoginInfoText: "show" }) : this.redirectUserToHomePage();
+        (this.state.usernameVal === Config.login.username && this.state.passwordVal === Config.login.password) ? this.redirectUserToHomePage() : this.setState({ incorrectLoginInfoText: "show" });
     }
 
-    inputPasswordChangeHandler = (e) => {
-        this.setState({password: e.target.value});
+    // Redirect User to Home Page on Successful Login
+    redirectUserToHomePage = () => {
+        this.setState({ incorrectLoginInfoText: "hide" });
+        window.sessionStorage.setItem('access-token', Config.auth["access-token"]);
+        this.props.history.push('/home/');
     }
-
-    loginButtonHandler = () => {
-        this.state.username === "" ? this.setState({reqUsername: "dispBlock"}) : this.setState({reqUsername: "dispNone"});
-        this.state.password === "" ? this.setState({reqPassword: "dispBlock"}) : this.setState({reqPassword: "dispNone"});
-        let usernameCorrect = "IVUser";
-        let passwordCorrect = "IVPassword";
-        if (this.state.username === usernameCorrect && this.state.password === passwordCorrect) {
-            sessionStorage.setItem('access_token', '8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784');
-            console.log(sessionStorage.getItem('access_token'));
-            ReactDOM.render(<Home baseUrl={this.props.baseUrl}/>, document.getElementById('root'));
-        } else {
-            if (this.state.username !== "" && this.state.password !== "")
-                this.setState({error: "dispBlock"});
-        }
-    }
-
     render() {
         return (
-            <div>
-                <Header baseUrl={this.props.baseUrl}/>
-
-                <Card className="cardStyle">
+            <PageWithHeader title="Image Viewer">
+                <Card className="login-card" >
                     <CardContent>
-                        <Typography variant="h4">
-                            LOGIN
-                        </Typography> <br/>
-                        <FormControl required className="formControl">
-                            <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" type="text" username={this.state.username}
-                                   onChange={this.inputUsernameChangeHandler}/>
-                            <FormHelperText className={this.state.reqUsername}><span
-                                className="red">required</span></FormHelperText>
-                        </FormControl><br/><br/>
-                        <FormControl required className="formControl">
-                            <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input id="password" type="password" password={this.state.password}
-                                   onChange={this.inputPasswordChangeHandler}/>
-                            <FormHelperText className={this.state.reqPassword}><span
-                                className="red">required</span></FormHelperText>
-                        </FormControl> <br/><br/>
-                        <FormControl required className="formControl">
-                            <FormHelperText className={this.state.error}><span className="red">Incorrect username and/or password</span></FormHelperText>
-                        </FormControl><br/><br/>
-                        <Button variant="contained" onClick={this.loginButtonHandler} color="primary">
-                            Login
-                        </Button>
+                        <FormControl margin="normal" size="medium" variant="standard">
+                            <Typography className="login-title" variant="h5" component="h5" color="textPrimary"
+                            >LOGIN</Typography>
+                        </FormControl>
+                        <FormControl fullWidth required margin="normal" size="medium" variant="standard">
+                            <InputLabel htmlFor="ip-uname">Username</InputLabel>
+                            <Input id="ip-uname" type="text" onChange={this.getUsernameOnChange} />
+                            <FormHelperText error className={this.state.usernameRequiredText}>required</FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth required margin="normal" size="medium" variant="standard">
+                            <InputLabel htmlFor="ip-passwd">Password</InputLabel>
+                            <Input id="ip-passwd" type="password" onChange={this.getPasswordOnChange} />
+                            <FormHelperText error className={this.state.passwordRequiredText}>required</FormHelperText>
+                        </FormControl>
+                        <FormHelperText error className={this.state.incorrectLoginInfoText}>Incorrect username and/or password</FormHelperText>
                     </CardContent>
+                    <CardActions>
+                        <FormControl margin="normal" size="medium" variant="standard">
+                            <Button variant="contained" color="primary" id="btn-login" onClick={this.loginUserOnBtnClick}>LOGIN</Button>
+                        </FormControl>
+                    </CardActions>
                 </Card>
-            </div>
-        )
+            </PageWithHeader>
+        );
     }
 }
-
-export default Login;
