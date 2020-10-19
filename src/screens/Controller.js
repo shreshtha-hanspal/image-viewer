@@ -20,6 +20,7 @@ class Controller extends Component {
                     <Route exact path='/' render={(props) => <Login {...props} baseUrl={this.baseUrl} />} />
                     <Route path='/home' render={(props) => (sessionStorage.getItem("access-token") !== null ? <Home {...props} baseUrl={this.baseUrl} loggedIn="true" showSearchTab="true" /> : <Redirect to="/" />)} />
                     <Route path='/profile' render={(props) => (sessionStorage.getItem("access-token") !== null ? <Profile {...props} baseUrl={this.baseUrl} loggedIn="true" /> : <Redirect to="/" />)} />
+                    <Route path='/userhome' render={(props) => (sessionStorage.getItem("access-token") !== null ? <Profile {...props} baseUrl={this.baseUrl} loggedIn="true" /> : <Redirect to="/" />)} />
                 </div>
             </Router>
         )

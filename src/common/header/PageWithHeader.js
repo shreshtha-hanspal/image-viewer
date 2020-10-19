@@ -12,7 +12,7 @@ export default class PageWithHeader extends Component {
                 <StylesProvider injectFirst>
                     <AppBar className="page-header">
                         <Toolbar >
-                            <Typography className="title-text" variant="h6" noWrap><Link className="home-link" to='/userhome' >{this.props.title}</Link></Typography>
+                            <Typography className="title-text" variant="h6" noWrap><Link className="home-link" to='/home' >{this.props.title}</Link></Typography>
                             <Box ml="auto" display="flex" flexDirection="row" alignItems="center" >
                                 {this.props.positionLeft}
                             </Box>
