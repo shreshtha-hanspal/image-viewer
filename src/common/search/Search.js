@@ -1,7 +1,7 @@
 import React from 'react';
-import { Input, InputAdornment } from '@material-ui/core';
+import {Input, InputAdornment} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
 
@@ -18,13 +18,13 @@ const useStyles = makeStyles({
 
 export default function Search(props) {
     const classes = useStyles();
-    
+
     return (
         <Input disableUnderline className={classes.search}
-            startAdornment={
-                <InputAdornment position="start">
-                    <SearchIcon fontSize="large" />
-                </InputAdornment>
-            } placeholder="Search..." onChange={props.onChange} />
+               startAdornment={
+                   <InputAdornment position="start">
+                       <SearchIcon fontSize="large"/>
+                   </InputAdornment>
+               } placeholder="Search..." onChange={props.onChange}/>
     );
 }

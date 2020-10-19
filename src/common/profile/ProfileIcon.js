@@ -1,6 +1,6 @@
 import React from 'react';
-import { Avatar, IconButton, Menu, MenuItem, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {Avatar, IconButton, Menu, MenuItem, Divider} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 import ProfileImage from '../../assets/Profile.jpeg'
 
 const useStyles = makeStyles({
@@ -17,7 +17,9 @@ const useStyles = makeStyles({
     }
 });
 
-// Generic Profile Avatar Component
+/*
+Generic Profile Avatar Component
+ */
 export default function ProfileIcon(props) {
 
     const [anchor, setAnchor] = React.useState(null);
@@ -25,8 +27,7 @@ export default function ProfileIcon(props) {
     const handleOpen = (event) => {
         setAnchor(event.currentTarget);
     }
-
-    // Handler method to close profile menu 
+    /*Handler method to close profile menu */
     const handleClose = (handler) => {
         setAnchor(null);
     }
@@ -35,26 +36,27 @@ export default function ProfileIcon(props) {
             {(() => {
                 if (props.type === "avatarWithMenu") {
                     return (<div>
-                        <IconButton className={classes.userAvatar} onClick={handleOpen}>
-                            <Avatar alt="AS" src={ProfileImage} />
-                        </IconButton>
-                        <Menu id="profile-menu" anchorEl={anchor} keepMounted open={Boolean(anchor)}
-                            onClose={handleClose}>
-                            {props.menuOptions.map((menuItem, index) => (
-                                <div key={"menu-item-" + index} >
-                                    <MenuItem onClick={props.handlers[index]}>{menuItem}</MenuItem>
-                                    {(index < props.menuOptions.length - 1) ? <Divider className={classes.menuItemSeparator} /> : ""}
-                                </div>
-                            ))}
+                            <IconButton className={classes.userAvatar} onClick={handleOpen}>
+                                <Avatar alt="AS" src={ProfileImage}/></IconButton>
+                            <Menu id="profile-menu" anchorEl={anchor} keepMounted open={Boolean(anchor)}
+                                  onClose={handleClose}>
+                                {props.menuOptions.map((menuItem, index) => (
+                                    <div key={"menu-item-" + index}>
+                                        <MenuItem onClick={props.handlers[index]}>{menuItem}</MenuItem>
+                                        {(index < props.menuOptions.length - 1) ?
+                                            <Divider className={classes.menuItemSeparator}/> : ""}
+                                    </div>
+                                ))}
 
-                        </Menu></div>
+                            </Menu></div>
                     );
                 } else {
                     return (
 
-                        <Avatar alt="AS" src={ProfileImage} />
+                        <Avatar alt="AS" src={ProfileImage}/>
                     );
-                }})()
+                }
+            })()
             }
         </div>
     );

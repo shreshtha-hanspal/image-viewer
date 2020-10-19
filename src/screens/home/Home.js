@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Box, Card, CardContent, CardActions, CardHeader, Typography } from '@material-ui/core';
+import React, {Component} from 'react';
+import {Box, Card, CardContent, CardActions, CardHeader, Typography} from '@material-ui/core';
 import PostMedia from '../../common/post/PostMedia';
 import PostCaption from '../../common/post/PostCaption';
 import PostLikes from '../../common/post/PostLikes';
 import PostComments from '../../common/post/PostComments';
-import PageWithHeader from '../../common/header/PageWithHeader';
+import PageHeader from '../../common/header/PageHeader';
 import Search from '../../common/search/Search';
 import ProfileIcon from '../../common/profile/ProfileIcon';
 import './Home.css';
@@ -57,9 +57,9 @@ export default class Home extends Component {
     getProfileAvatar = () => {
         return (
             <Box ml="auto" display="flex" flexDirection="row" alignItems="center">
-                <Search onChange={this.filterPost} />
+                <Search onChange={this.filterPost}/>
                 <ProfileIcon type="avatarWithMenu" menuOptions={['My Account', 'Logout']}
-                    handlers={[this.redirectUserToAccountsPage, this.logoutUser]} />
+                             handlers={[this.redirectUserToAccountsPage, this.logoutUser]}/>
             </Box>);
     };
 
@@ -85,41 +85,45 @@ export default class Home extends Component {
                 posts[i].isLiked = false;
                 posts[i].numLikes = Math.round(100 + Math.random() * 100);
             }
-            this.setState({ userPosts: posts });
-            this.setState({ posts: posts.filter(x => true) });
+            this.setState({userPosts: posts});
+            this.setState({posts: posts.filter(x => true)});
         }
     }
 
     render() {
         return (
-            <PageWithHeader title="Image Viewer" positionLeft={this.getProfileAvatar}>
+            <PageHeader title="Image Viewer" positionLeft={this.getProfileAvatar}>
                 {
                     (this.state.userPosts.length > 0) ?
                         (
-                            <Box display="flex" width="90%" m="auto" flexDirection="row" flexWrap="wrap" alignItems="space-around" justifyContent="space-between">
+                            <Box display="flex" width="90%" m="auto" flexDirection="row" flexWrap="wrap"
+                                 alignItems="space-around" justifyContent="space-between">
                                 {
                                     this.state.userPosts.map(userPost => (
                                         <Card key={userPost.id + "post"} raised className="post">
                                             <CardHeader className="post-header" disableTypography
-                                                avatar={<ProfileIcon type="avatarOnly" />}
-                                                title={<Typography className="text-bold" variant="body1">{userPost.username}</Typography>}
-                                                subheader={<Typography className="text-lite" variant="subtitle2">{this.covertDate(userPost.timestamp)}</Typography>}>
+                                                        avatar={<ProfileIcon type="avatarOnly"/>}
+                                                        title={<Typography className="text-bold"
+                                                                           variant="body1">{userPost.username}</Typography>}
+                                                        subheader={<Typography className="text-lite"
+                                                                               variant="subtitle2">{this.covertDate(userPost.timestamp)}</Typography>}>
                                             </CardHeader>
                                             <CardContent className="post-content">
-                                                <PostMedia media={userPost.media_url} mediaId={userPost.id} />
-                                                <PostCaption text={userPost.caption} />
+                                                <PostMedia media={userPost.media_url} mediaId={userPost.id}/>
+                                                <PostCaption text={userPost.caption}/>
                                             </CardContent>
                                             <CardActions className="post-footer">
-                                                <Box width="100%" display="flex" flexDirection="column" alignItems="left">
-                                                    <PostLikes likes={userPost.numLikes} />
-                                                    <PostComments baseId={userPost.id} postUser={userPost.username} />
+                                                <Box width="100%" display="flex" flexDirection="column"
+                                                     alignItems="left">
+                                                    <PostLikes likes={userPost.numLikes}/>
+                                                    <PostComments baseId={userPost.id} postUser={userPost.username}/>
                                                 </Box>
                                             </CardActions>
                                         </Card>
                                     ))
                                 }
                             </Box>) : ""}
-            </PageWithHeader>
+            </PageHeader>
         );
     }
 }

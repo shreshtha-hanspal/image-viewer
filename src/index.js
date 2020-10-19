@@ -4,6 +4,6 @@ import './index.css';
 import Controller from '../src/Controller';
 
 ReactDOM.render(
-    <Controller />,
+    <Controller/>,
     document.getElementById('root')
 );
