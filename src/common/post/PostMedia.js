@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // Post Media (Image) Component
 export default function PostMedia(props) {
-
+    
     const useStyles = makeStyles({
         imageContainer: {
             marginLeft: 0,
@@ -16,10 +16,10 @@ export default function PostMedia(props) {
             width: '100%'
         }
     });
-
+    
     const classes = useStyles();
-
+    
     return (
         <CardMedia className={"post-image " + classes.imageContainer} image={props.media} title={props.mediaId} />
-    );
+        );
 }

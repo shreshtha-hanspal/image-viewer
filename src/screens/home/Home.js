@@ -21,14 +21,14 @@ export default class Home extends Component {
         this.logoutUser = this.logoutUser.bind(this);
         this.redirectUserToAccountsPage = this.redirectUserToAccountsPage.bind(this);
         this.filterPost = this.filterPost.bind(this);
-
     }
 
     // Handler method to filter posts on change in Search Text
     filterPost = (e) => {
         this.setState({
-            searchPattern: e.target.value, userPosts: this.state.posts.filter(
-                (post) => post.caption.includes(e.target.value)
+            searchPattern: e.target.value,
+            userPosts: this.state.posts.filter(
+                (post) => post.caption ? post.caption.includes(e.target.value) : null
             )
         });
     }
@@ -46,8 +46,8 @@ export default class Home extends Component {
         let mm = date.getMonth() + 1;
         dd = (dd < 10) ? ("0" + dd) : dd;
         mm = (mm < 10) ? ("0" + mm) : mm;
-        return dd + '/' + mm + '/' + date.getFullYear()
-            + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+        return dd + '/' + mm + '/' + date.getFullYear() +
+            ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
     };
 
     // Redirect user to his profile page when he clicks on My Account
@@ -88,11 +88,6 @@ export default class Home extends Component {
             this.setState({ userPosts: posts });
             this.setState({ posts: posts.filter(x => true) });
         }
-        else {
-            this.setState({ userPosts: postsDetails });
-            this.setState({ posts: postsDetails.filter(x => true) });
-        }
-
     }
 
     render() {
@@ -127,5 +122,4 @@ export default class Home extends Component {
             </PageWithHeader>
         );
     }
-
 }

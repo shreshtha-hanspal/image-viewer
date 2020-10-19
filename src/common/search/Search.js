@@ -4,6 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+
     search: {
         marginRight: "5%",
         padding: "0.8%",
@@ -12,10 +13,12 @@ const useStyles = makeStyles({
         backgroundColor: "#c0c0c0",
         color: "darkslategray"
     }
+
 });
 
 export default function Search(props) {
     const classes = useStyles();
+    
     return (
         <Input disableUnderline className={classes.search}
             startAdornment={

@@ -26,7 +26,7 @@ export default function ProfileIcon(props) {
         setAnchor(event.currentTarget);
     }
 
-    // Handler method to close profile menu
+    // Handler method to close profile menu 
     const handleClose = (handler) => {
         setAnchor(null);
     }
@@ -35,19 +35,19 @@ export default function ProfileIcon(props) {
             {(() => {
                 if (props.type === "avatarWithMenu") {
                     return (<div>
-                            <IconButton className={classes.userAvatar} onClick={handleOpen}>
-                                <Avatar alt="AS" src={ProfileImage} />
-                            </IconButton>
-                            <Menu id="profile-menu" anchorEl={anchor} keepMounted open={Boolean(anchor)}
-                                  onClose={handleClose}>
-                                {props.menuOptions.map((menuItem, index) => (
-                                    <div key={"menu-item-" + index} >
-                                        <MenuItem onClick={props.handlers[index]}>{menuItem}</MenuItem>
-                                        {(index < props.menuOptions.length - 1) ? <Divider className={classes.menuItemSeparator} /> : ""}
-                                    </div>
-                                ))}
+                        <IconButton className={classes.userAvatar} onClick={handleOpen}>
+                            <Avatar alt="AS" src={ProfileImage} />
+                        </IconButton>
+                        <Menu id="profile-menu" anchorEl={anchor} keepMounted open={Boolean(anchor)}
+                            onClose={handleClose}>
+                            {props.menuOptions.map((menuItem, index) => (
+                                <div key={"menu-item-" + index} >
+                                    <MenuItem onClick={props.handlers[index]}>{menuItem}</MenuItem>
+                                    {(index < props.menuOptions.length - 1) ? <Divider className={classes.menuItemSeparator} /> : ""}
+                                </div>
+                            ))}
 
-                            </Menu></div>
+                        </Menu></div>
                     );
                 } else {
                     return (
