@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     block: {
         display: 'block'
     }
-
+    
 });
 
 // Post likes component

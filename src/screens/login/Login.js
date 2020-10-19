@@ -5,12 +5,12 @@ import Config from '../../common/config';
 import './Login.css';
 
 /*******************
- * Username: admin
- * Password: admin
- * Access Token: IGQVJXZAU5KUGZA3ZAmQxalVNUjE4RVRDdW1JcnZAvd2RzOWplWThXeEd6dXRCa0k3bzRodmZAWLWMzSElxUldRTUU5T0FhNWlNbGNsX3dLVF9ZAN0xTMDhCeEFfbUo4NVVuYW5NSVp0SFpTT2p2c2ZArYlZArbQZDZD
- *
- * Stored statically in ../../common/Config.js
- *******************/
+         * Username: admin
+         * Password: admin
+         * Access Token: IGQVJXZAU5KUGZA3ZAmQxalVNUjE4RVRDdW1JcnZAvd2RzOWplWThXeEd6dXRCa0k3bzRodmZAWLWMzSElxUldRTUU5T0FhNWlNbGNsX3dLVF9ZAN0xTMDhCeEFfbUo4NVVuYW5NSVp0SFpTT2p2c2ZArYlZArbQZDZD
+         *
+         * Stored statically in ../../common/Config.js
+         *******************/
 
 export default class Login extends Component {
     constructor() {

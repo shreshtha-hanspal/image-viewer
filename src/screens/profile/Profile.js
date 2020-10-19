@@ -8,10 +8,8 @@ import PostComments from '../../common/post/PostComments';
 import PageWithHeader from '../../common/header/PageWithHeader';
 import ProfileDetail from '../../common/profile/ProfileDetails';
 import ProfileIcon from '../../common/profile/ProfileIcon';
-import { postsDetails } from '../../common/Test';
 import Config from '../../common/config';
 import './Profile.css';
-
 
 export default class Profile extends Component {
     constructor() {
@@ -64,10 +62,6 @@ export default class Profile extends Component {
             }
             this.setState({ userPosts: posts });
         }
-        else {
-            this.setState({ userPosts: postsDetails });
-        }
-
     }
 
     // Handler to open post modal
@@ -86,7 +80,7 @@ export default class Profile extends Component {
                 {
                     (this.state.userPosts.length > 0) ?
                         (<Box><ProfileDetail className="profile-detail" userName={this.state.userPosts[0].username} numPosts={this.state.userPosts.length}
-                            fullName="Tayyab Khan" follows={Math.round(100 + Math.random() * 11)}
+                            fullName="Shreshtha Hanspal" follows={Math.round(100 + Math.random() * 11)}
                             followers={Math.round(13270 + Math.random() * 11)} />
                             < Box className="image-grid">
                                 <GridList cellHeight={300} cols={3}>
