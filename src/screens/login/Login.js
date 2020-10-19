@@ -4,6 +4,14 @@ import PageWithHeader from '../../common/header/PageWithHeader';
 import Config from '../../common/config';
 import './Login.css';
 
+/*******************
+ * Username: admin
+ * Password: admin
+ * Access Token: IGQVJXZAU5KUGZA3ZAmQxalVNUjE4RVRDdW1JcnZAvd2RzOWplWThXeEd6dXRCa0k3bzRodmZAWLWMzSElxUldRTUU5T0FhNWlNbGNsX3dLVF9ZAN0xTMDhCeEFfbUo4NVVuYW5NSVp0SFpTT2p2c2ZArYlZArbQZDZD
+ *
+ * Stored statically in ../../common/Config.js
+ *******************/
+
 export default class Login extends Component {
     constructor() {
         super();
@@ -14,11 +22,6 @@ export default class Login extends Component {
             passwordRequiredText: "hide",
             incorrectLoginInfoText: "hide"
         }
-
-        /*****************************************************************************
-         * Username, Password, Access Token & Mocking can be setup or enabled in
-         *  ../../common/Config.js
-         *****************************************************************************/
     }
 
     getUsernameOnChange = (e) => this.setState({ usernameVal: e.target.value, usernameRequiredText: "hide" });
@@ -26,10 +29,10 @@ export default class Login extends Component {
 
     //Verify Input Credentials & log the user in if the supplied credentials are OK
     loginUserOnBtnClick = (e) => {
-        (!this.state.usernameVal) ? this.setState({ usernameRequiredText: "show" }) : this.setState({ usernameRequiredText: "hide" });
-        (!this.state.passwordVal) ? this.setState({ passwordRequiredText: "show" }) : this.setState({ passwordRequiredText: "hide" });
+        (!this.state.usernameVal) ? this.setState({ usernameRequiredText: "show" }): this.setState({ usernameRequiredText: "hide" });
+        (!this.state.passwordVal) ? this.setState({ passwordRequiredText: "show" }): this.setState({ passwordRequiredText: "hide" });
         // (this.state.usernameVal !== "" && this.state.passwordVal !== "" && (this.state.usernameVal !== Config.login.username || this.state.passwordVal !== Config.login.password)) ? this.setState({ incorrectLoginInfoText: "show" }) : this.redirectUserToHomePage();
-        (this.state.usernameVal === Config.login.username && this.state.passwordVal === Config.login.password) ? this.redirectUserToHomePage() : this.setState({ incorrectLoginInfoText: "show" });
+        (this.state.usernameVal === Config.login.username && this.state.passwordVal === Config.login.password) ? this.redirectUserToHomePage(): this.setState({ incorrectLoginInfoText: "show" });
     }
 
     // Redirect User to Home Page on Successful Login
