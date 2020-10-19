@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Divider, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {Box, Divider, Typography} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
 
@@ -35,10 +35,9 @@ export default function PostCaption(props) {
     let caption = (!props.text) ? "" : props.text.split(' ').filter(str => !str.startsWith('#')).join(' ');
     return (
         <Box width="100%" className="post-captions">
-            <Divider className={"separator " +classes.separator}/>
+            <Divider className={"separator " + classes.separator}/>
             <Typography className={"caption-text " + classes.caption} variant="subtitle1">{caption}</Typography>
             <Typography className={"hastag-text " + classes.hashtags} variant="subtitle2">{hashtags}</Typography>
         </Box>
     );
 }
-

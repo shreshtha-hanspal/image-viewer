@@ -1,7 +1,18 @@
 import React from 'react';
-import { Box, Typography, Button, Modal, Backdrop, Fade, FormControl, InputLabel, Input, FormHelperText } from '@material-ui/core';
+import {
+    Box,
+    Typography,
+    Button,
+    Modal,
+    Backdrop,
+    Fade,
+    FormControl,
+    InputLabel,
+    Input,
+    FormHelperText
+} from '@material-ui/core';
 import EditIcon from "@material-ui/icons/Edit";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import ProfileIcon from '../../common/profile/ProfileIcon';
 
 const useStyles = makeStyles({
@@ -71,17 +82,17 @@ export default function ProfileDetails(props) {
     const updateFullName = () => {
         if (!input) {
             setError("show");
-        }
-        else {
+        } else {
             setFullName(input);
             handleClose();
         }
     };
 
     return (
-        <Box width="50%" display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly" className={classes.profileDetails + " " + props.className}>
-            <ProfileIcon type="avatarOnly" />
-            <Box width="50%" display="flex" flexDirection="column" alignContent="space-around" >
+        <Box width="50%" display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly"
+             className={classes.profileDetails + " " + props.className}>
+            <ProfileIcon type="avatarOnly"/>
+            <Box width="50%" display="flex" flexDirection="column" alignContent="space-around">
                 <Typography variant="h5">{props.userName}</Typography>
                 <Box display="flex" flexDirection="row" justifyContent="space-between">
                     <Typography variant="body2">Posts: {props.numPosts}</Typography>
@@ -91,11 +102,12 @@ export default function ProfileDetails(props) {
                 <Typography variant="h6">
                     {fullName}
                     <Button className={classes.btnEdit} variant="contained" color="secondary" onClick={handleOpen}>
-                        <EditIcon fontSize="inherit" />
+                        <EditIcon fontSize="inherit"/>
                     </Button>
                 </Typography>
             </Box>
-            <Modal className={classes.modal} open={open} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop}>
+            <Modal className={classes.modal} open={open} onClose={handleClose} closeAfterTransition
+                   BackdropComponent={Backdrop}>
                 <Fade in={open}>
                     <div className={classes.modalContent}>
                         <FormControl variant="standard">
@@ -105,11 +117,12 @@ export default function ProfileDetails(props) {
                         </FormControl>
                         <FormControl required variant="standard">
                             <InputLabel htmlFor="field-fullname">Fullname</InputLabel>
-                            <Input id="field-fullname" type="text" onChange={getInputOnChange} />
+                            <Input id="field-fullname" type="text" onChange={getInputOnChange}/>
                             <FormHelperText error className={error}>required</FormHelperText>
                         </FormControl>
                         <FormControl variant="standard">
-                            <Button className={classes.btnUpdate} variant="contained" color="primary" id="btn-edit" onClick={updateFullName}>
+                            <Button className={classes.btnUpdate} variant="contained" color="primary" id="btn-edit"
+                                    onClick={updateFullName}>
                                 UPDATE
                             </Button>
                         </FormControl>

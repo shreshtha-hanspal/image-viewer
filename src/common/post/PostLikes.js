@@ -1,7 +1,7 @@
 import React from 'react';
-import { IconButton, Typography, Box } from '@material-ui/core';
-import { Favorite, FavoriteBorderOutlined } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import {IconButton, Typography, Box} from '@material-ui/core';
+import {Favorite, FavoriteBorderOutlined} from '@material-ui/icons';
+import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     block: {
         display: 'block'
     }
-    
+
 });
 
 // Post likes component
@@ -26,13 +26,14 @@ export default function PostLikes(props) {
     const [likes, setLikes] = React.useState(props.likes);
     const classes = useStyles();
     const onLike = () => {
-        (isLiked) ? setLikes(likes-1) : setLikes(likes+1);
+        (isLiked) ? setLikes(likes - 1) : setLikes(likes + 1);
         setLiked(!isLiked);
     }
     return (
         <Box className={"post-likes " + classes.block}>
             <IconButton onClick={onLike} className={classes.dense}>
-                {(isLiked) ? <Favorite color="error" className={classes.dense}/> : <FavoriteBorderOutlined className={classes.dense} />}
+                {(isLiked) ? <Favorite color="error" className={classes.dense}/> :
+                    <FavoriteBorderOutlined className={classes.dense}/>}
             </IconButton>
             <Typography variant="caption">{likes} likes</Typography>
         </Box>

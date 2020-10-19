@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { GridList, GridListTile, Box, Modal, Backdrop, Fade } from '@material-ui/core';
+import React, {Component} from 'react';
+import {GridList, GridListTile, Box, Modal, Backdrop, Fade} from '@material-ui/core';
 import PostHeader from '../../common/post/PostHeader';
 import PostMedia from '../../common/post/PostMedia';
 import PostCaption from '../../common/post/PostCaption';
 import PostLikes from '../../common/post/PostLikes';
 import PostComments from '../../common/post/PostComments';
-import PageWithHeader from '../../common/header/PageWithHeader';
+import PageHeader from '../../common/header/PageHeader';
 import ProfileDetail from '../../common/profile/ProfileDetails';
 import ProfileIcon from '../../common/profile/ProfileIcon';
 import Config from '../../common/config';
@@ -22,6 +22,7 @@ export default class Profile extends Component {
         this.logoutUser = this.logoutUser.bind(this);
         this.redirectUserToHomePage = this.redirectUserToHomePage.bind(this);
     }
+
     logoutUser = () => {
         sessionStorage.clear();
         this.props.history.replace('/');
@@ -34,7 +35,7 @@ export default class Profile extends Component {
     getProfileAvatar = () => {
         return (
             <Box ml="auto" display="flex" flexDirection="row" alignItems="center">
-                <ProfileIcon type="avatarWithMenu" menuOptions={['Logout']} handlers={[this.logoutUser]} />
+                <ProfileIcon type="avatarWithMenu" menuOptions={['Logout']} handlers={[this.logoutUser]}/>
             </Box>);
     };
 
@@ -60,51 +61,59 @@ export default class Profile extends Component {
                 posts[i].isLiked = false;
                 posts[i].numLikes = Math.round(100 + Math.random() * 100);
             }
-            this.setState({ userPosts: posts });
+            this.setState({userPosts: posts});
         }
     }
 
     // Handler to open post modal
     openPostDetails = (e) => {
-        this.setState({ open: true, userPost: this.state.userPosts.find((post) => post.id === e.target.id) });
+        this.setState({open: true, userPost: this.state.userPosts.find((post) => post.id === e.target.id)});
     }
 
     // Handler to close post modal
     closePostDetails = (e) => {
-        this.setState({ open: false, userPost: {} });
+        this.setState({open: false, userPost: {}});
     }
 
     render() {
         return (
-            <PageWithHeader title="Image Viewer" positionLeft={this.getProfileAvatar}>
+            <PageHeader title="Image Viewer" positionLeft={this.getProfileAvatar}>
                 {
                     (this.state.userPosts.length > 0) ?
-                        (<Box><ProfileDetail className="profile-detail" userName={this.state.userPosts[0].username} numPosts={this.state.userPosts.length}
-                            fullName="Shreshtha Hanspal" follows={Math.round(100 + Math.random() * 11)}
-                            followers={Math.round(13270 + Math.random() * 11)} />
+                        (<Box><ProfileDetail className="profile-detail" userName={this.state.userPosts[0].username}
+                                             numPosts={this.state.userPosts.length}
+                                             fullName="Shreshtha Hanspal" follows={Math.round(100 + Math.random() * 11)}
+                                             followers={Math.round(13270 + Math.random() * 11)}/>
                             < Box className="image-grid">
                                 <GridList cellHeight={300} cols={3}>
                                     {this.state.userPosts.map((userPost) => (
-                                        <GridListTile key={userPost.id} >
-                                            <img id={userPost.id} src={userPost.media_url} alt={userPost.id} onClick={this.openPostDetails} />
+                                        <GridListTile key={userPost.id}>
+                                            <img id={userPost.id} src={userPost.media_url} alt={userPost.id}
+                                                 onClick={this.openPostDetails}/>
                                         </GridListTile>
                                     ))}
                                 </GridList>
                             </Box>
 
                             <Modal className="modal" open={this.state.open}
-                                onClose={this.closePostDetails} closeAfterTransition BackdropComponent={Backdrop}>
+                                   onClose={this.closePostDetails} closeAfterTransition BackdropComponent={Backdrop}>
                                 <Fade in={this.state.open}>
-                                    <Box width="60%" display="flex" flexDirection="row" justifyContent="space-evenly" className="modal-content">
-                                        <Box m="1%" width="50%" className="image-container" >
-                                            {(this.state.userPost.media_url) ? <PostMedia media={this.state.userPost.media_url} mediaId={this.state.userPost.id} minWidth="350px" minHeight="350px" /> : ""}
+                                    <Box width="60%" display="flex" flexDirection="row" justifyContent="space-evenly"
+                                         className="modal-content">
+                                        <Box m="1%" width="50%" className="image-container">
+                                            {(this.state.userPost.media_url) ?
+                                                <PostMedia media={this.state.userPost.media_url}
+                                                           mediaId={this.state.userPost.id} minWidth="350px"
+                                                           minHeight="350px"/> : ""}
                                         </Box>
-                                        <Box m="2%" width="50%" display="flex" flexDirection="column" justifyContent="left" alignItems="center">
-                                            <PostHeader postUser={this.state.userPost.username} postedTime={this.state.userPost.timestamp} />
-                                            <PostCaption mb="auto" text={this.state.userPost.caption} />
+                                        <Box m="2%" width="50%" display="flex" flexDirection="column"
+                                             justifyContent="left" alignItems="center">
+                                            <PostHeader postUser={this.state.userPost.username}
+                                                        postedTime={this.state.userPost.timestamp}/>
+                                            <PostCaption mb="auto" text={this.state.userPost.caption}/>
                                             <Box mt="auto" width="100%">
-                                                <PostComments postUser={this.state.userPost.username} >
-                                                    <PostLikes likes={this.state.userPost.numLikes} />
+                                                <PostComments postUser={this.state.userPost.username}>
+                                                    <PostLikes likes={this.state.userPost.numLikes}/>
                                                 </PostComments>
                                             </Box>
                                         </Box>
@@ -112,7 +121,7 @@ export default class Profile extends Component {
                                 </Fade>
                             </Modal>
                         </Box>) : ""}
-            </PageWithHeader>
+            </PageHeader>
         );
     }
 }

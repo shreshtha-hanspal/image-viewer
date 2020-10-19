@@ -4,10 +4,11 @@
     padding: 2%;
 }
 
+.show {
+    display: block;
+}
+
 .hide {
     display: none;
 }
 
-.show {
-    display: block;
-}
