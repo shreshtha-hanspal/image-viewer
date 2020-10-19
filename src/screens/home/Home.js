@@ -8,7 +8,6 @@ import PageWithHeader from '../../common/header/PageWithHeader';
 import Search from '../../common/search/Search';
 import ProfileIcon from '../../common/profile/ProfileIcon';
 import './Home.css';
-import { postsDetails } from '../../common/Test';
 import Config from '../../common/config';
 
 export default class Home extends Component {
